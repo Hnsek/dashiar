@@ -9,10 +9,11 @@ import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
+import { getContext } from './config/persist-query.tsx'
 
 // Create a new router instance
 
-const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
+const TanStackQueryProviderContext = getContext()
 const router = createRouter({
   routeTree,
   context: {
