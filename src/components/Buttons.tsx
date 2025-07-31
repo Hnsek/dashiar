@@ -1,4 +1,4 @@
-import { useRef, type ChangeEvent, type ReactNode } from "react"
+import { useRef, type ButtonHTMLAttributes, type ChangeEvent, type ReactNode } from "react"
 
 type FileButtonProps = {
     text?:string,
@@ -23,4 +23,19 @@ export const FileButton = (props:FileButtonProps) => {
             multiple={props.multiple}
             />
     </>
+}
+
+type ButtonProps = {
+    text?:string,
+    icon?: ReactNode,
+} & ButtonHTMLAttributes<HTMLButtonElement>
+
+export const Button = (props: ButtonProps) => {
+    const { text, icon, ...buttonProps} = props
+     return <button className="flex items-center gap-1 bg-[var(--primary)] rounded text-[var(--text)] p-3 cursor-pointer hover:brightness-80"
+        {...buttonProps}
+     >
+        <p>{props.text}</p>
+        {props.icon}
+    </button>
 }
