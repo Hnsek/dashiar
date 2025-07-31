@@ -12,7 +12,6 @@ export const FileImport = (props: Props) => {
     return <div   
           className="flex justify-center items-center flex-col gap-2 w-full h-full"
           onDrop={(event: React.DragEvent<HTMLElement>) => {
-            console.warn("drop")
             event.preventDefault()
             props.onChoose?.(Array.from(event.dataTransfer.files))
           }}
