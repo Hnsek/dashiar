@@ -9,19 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ImportDataRouteImport } from './routes/import-data'
-import { Route as HomeRouteImport } from './routes/home'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
+import { Route as authenticatedImportDataRouteImport } from './routes/(authenticated)/import-data'
 
-const ImportDataRoute = ImportDataRouteImport.update({
-  id: '/import-data',
-  path: '/import-data',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
+const authenticatedRouteRoute = authenticatedRouteRouteImport.update({
+  id: '/(authenticated)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,55 +34,67 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authenticatedImportDataRoute = authenticatedImportDataRouteImport.update({
+  id: '/import-data',
+  path: '/import-data',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/home': typeof HomeRoute
-  '/import-data': typeof ImportDataRoute
+  '/': typeof authenticatedRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/import-data': typeof authenticatedImportDataRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/home': typeof HomeRoute
-  '/import-data': typeof ImportDataRoute
+  '/': typeof authenticatedRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/import-data': typeof authenticatedImportDataRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/home': typeof HomeRoute
-  '/import-data': typeof ImportDataRoute
+  '/(authenticated)': typeof authenticatedRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/(authenticated)/import-data': typeof authenticatedImportDataRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home' | '/import-data' | '/demo/tanstack-query'
+  fullPaths: '/' | '/login' | '/import-data' | '/demo/tanstack-query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home' | '/import-data' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/home' | '/import-data' | '/demo/tanstack-query'
+  to: '/' | '/login' | '/import-data' | '/demo/tanstack-query'
+  id:
+    | '__root__'
+    | '/'
+    | '/(authenticated)'
+    | '/login'
+    | '/(authenticated)/import-data'
+    | '/demo/tanstack-query'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HomeRoute: typeof HomeRoute
-  ImportDataRoute: typeof ImportDataRoute
+  authenticatedRouteRoute: typeof authenticatedRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/import-data': {
-      id: '/import-data'
-      path: '/import-data'
-      fullPath: '/import-data'
-      preLoaderRoute: typeof ImportDataRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
+    '/(authenticated)': {
+      id: '/(authenticated)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof authenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,13 +111,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated)/import-data': {
+      id: '/(authenticated)/import-data'
+      path: '/import-data'
+      fullPath: '/import-data'
+      preLoaderRoute: typeof authenticatedImportDataRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
   }
 }
 
+interface authenticatedRouteRouteChildren {
+  authenticatedImportDataRoute: typeof authenticatedImportDataRoute
+}
+
+const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
+  authenticatedImportDataRoute: authenticatedImportDataRoute,
+}
+
+const authenticatedRouteRouteWithChildren =
+  authenticatedRouteRoute._addFileChildren(authenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HomeRoute: HomeRoute,
-  ImportDataRoute: ImportDataRoute,
+  authenticatedRouteRoute: authenticatedRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
 export const routeTree = rootRouteImport

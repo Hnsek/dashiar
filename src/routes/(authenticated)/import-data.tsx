@@ -13,7 +13,7 @@ import Loading from '@/components/Loading';
 import { FaArrowRight } from "react-icons/fa";
 import { FileImport } from '@/components/FileImport';
 
-export const Route = createFileRoute('/import-data')({
+export const Route = createFileRoute('/(authenticated)/import-data')({
   component: RouteComponent,
 })
 
