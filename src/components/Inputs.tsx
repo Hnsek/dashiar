@@ -16,9 +16,18 @@ export const Input = (props: InputProps) => {
                 :
                 undefined    
         }
-        <div className="flex rounded border">
+        <div className="flex rounded border"
+            style={{
+                borderColor: props.error ? "#F00" : "#000",
+            }}
+        >
             <input {...inputProps}/>
             { icon }
         </div>
+        {props.error?
+            <p className="text-red-500">{props.error}</p>
+            :
+            undefined
+        }
     </div>
 }
