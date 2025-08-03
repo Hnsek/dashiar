@@ -108,7 +108,7 @@ function RouteComponent() {
                 onClick={() => {
                   addDoc(collection(database, "dashboards"), {
                     datasets,
-                    dashs:[]
+                    charts:[]
                   })
                   .then((result) => {
                     navigate({
