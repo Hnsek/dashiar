@@ -12,7 +12,9 @@ export type Dataset = {
         name:string,
         type:DataType
     }[],
-    values:unknown[][],
+    lines:{
+        columns:unknown[]
+    }[],
     fieldsValues:DataValue[]
 
 }
