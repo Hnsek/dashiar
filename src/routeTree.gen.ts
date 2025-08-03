@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as authenticatedImportDataRouteImport } from './routes/(authenticated)/import-data'
+import { Route as authenticatedDashboardRouteImport } from './routes/(authenticated)/dashboard'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -39,17 +40,24 @@ const authenticatedImportDataRoute = authenticatedImportDataRouteImport.update({
   path: '/import-data',
   getParentRoute: () => authenticatedRouteRoute,
 } as any)
+const authenticatedDashboardRoute = authenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof authenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard': typeof authenticatedDashboardRoute
   '/import-data': typeof authenticatedImportDataRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard': typeof authenticatedDashboardRoute
   '/import-data': typeof authenticatedImportDataRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,21 @@ export interface FileRoutesById {
   '/(authenticated)': typeof authenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/(authenticated)/dashboard': typeof authenticatedDashboardRoute
   '/(authenticated)/import-data': typeof authenticatedImportDataRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/import-data'
+  fullPaths: '/' | '/login' | '/signup' | '/dashboard' | '/import-data'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/import-data'
+  to: '/' | '/login' | '/signup' | '/dashboard' | '/import-data'
   id:
     | '__root__'
     | '/'
     | '/(authenticated)'
     | '/login'
     | '/signup'
+    | '/(authenticated)/dashboard'
     | '/(authenticated)/import-data'
   fileRoutesById: FileRoutesById
 }
@@ -118,14 +128,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedImportDataRouteImport
       parentRoute: typeof authenticatedRouteRoute
     }
+    '/(authenticated)/dashboard': {
+      id: '/(authenticated)/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof authenticatedDashboardRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
   }
 }
 
 interface authenticatedRouteRouteChildren {
+  authenticatedDashboardRoute: typeof authenticatedDashboardRoute
   authenticatedImportDataRoute: typeof authenticatedImportDataRoute
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
+  authenticatedDashboardRoute: authenticatedDashboardRoute,
   authenticatedImportDataRoute: authenticatedImportDataRoute,
 }
 

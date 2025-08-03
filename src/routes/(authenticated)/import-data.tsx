@@ -1,7 +1,7 @@
 import { Button, FileButton } from '@/components/Buttons'
 import csv from '@/services/csv';
 import { type Dataset } from '@/types/data';
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react';
 import { RxUpload } from "react-icons/rx";
 import {toast,ToastContainer} from "react-toastify"
@@ -12,6 +12,8 @@ import { convert } from '@/services/data-conversor';
 import Loading from '@/components/Loading';
 import { FaArrowRight } from "react-icons/fa";
 import { FileImport } from '@/components/FileImport';
+import { addDoc, collection } from 'firebase/firestore';
+import { database } from '@/firebase';
 
 export const Route = createFileRoute('/(authenticated)/import-data')({
   component: RouteComponent,
@@ -19,7 +21,10 @@ export const Route = createFileRoute('/(authenticated)/import-data')({
 
 function RouteComponent() {
   const [datasets, setDatasets] = useState<Dataset[]>()
+  const [values, setValues] = useState<unknown[][]>()
   const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const onChoose = ( files : File[]) => {
     if(!files){
@@ -50,11 +55,15 @@ function RouteComponent() {
                 type: DataType.TEXT
               }))
 
+              setValues(values)
+
+              const lines = values.map((value) => ({columns : value}))
+
               const data : Dataset = {
                 name: files[index].name,
-                rootData,
+                rootData: rootData.map(data => ({columns:data})),
                 fields: formattedFields,
-                values,
+                lines,
                 fieldsValues
               }
               
@@ -96,6 +105,24 @@ function RouteComponent() {
             datasets ?
               <Button
                 text="Next"
+                onClick={() => {
+                  addDoc(collection(database, "dashboards"), {
+                    datasets,
+                    dashs:[]
+                  })
+                  .then((result) => {
+                    navigate({
+                      to:"/dashboard",
+                      search:{
+                        id:result.id
+                      }
+                    })
+                  })
+                  .catch((error) => {
+                    console.error(error)
+                    toast.error("Data can't be saved")
+                  })
+                }}
                 icon={<FaArrowRight />}
               />
               :
@@ -110,11 +137,11 @@ function RouteComponent() {
           :
           <main className='flex overflow-auto flex-1'>
               {/* TODO: refact to multiple files */}
-              {datasets ? 
+              {datasets && values ? 
                 <div className='h-fit'>
                   <DataList
                     fields={datasets[0]?.fields}
-                    values={datasets[0]?.values}
+                    values={values}
                     onFieldTypeChange={(fieldName : string, type: DataType) => {
                         setDatasets((dataset) => {
                           if(!dataset){
@@ -126,7 +153,7 @@ function RouteComponent() {
 
                           dataset[index].fields[fieldIndex].type = type
 
-                          let fieldTransposedValues = lodash.unzip(dataset[index].values)[fieldIndex]
+                          let fieldTransposedValues = lodash.unzip(values)[fieldIndex]
 
                           fieldTransposedValues=fieldTransposedValues.map((value) => convert(value as string, type))
 
