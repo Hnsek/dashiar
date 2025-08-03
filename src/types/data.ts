@@ -20,10 +20,14 @@ export type Dataset = {
 }
 
 export type Chart = {
-
+    x:number,
+    y:number,
+    width: number,
+    height:number,
 }
 
 export type Dashboard = {
+    id:string
     datasets:Dataset[]
     charts:Chart[]
 } 
