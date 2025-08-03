@@ -18,3 +18,12 @@ export type Dataset = {
     fieldsValues:DataValue[]
 
 }
+
+export type Chart = {
+
+}
+
+export type Dashboard = {
+    datasets:Dataset[]
+    charts:Chart[]
+} 
