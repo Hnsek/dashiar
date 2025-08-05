@@ -1,4 +1,5 @@
 import { Chart, ChartContainer } from '@/components/Charts';
+import { DashboardTitle } from '@/components/DashboardTitle';
 import { ChartConfigSidebar, ChartsSidebar } from '@/components/Sidebars';
 import { calculate } from '@/services/chart-calculator';
 import { filter } from '@/services/chart-filter';
@@ -73,6 +74,18 @@ function RouteComponent() {
   },[selectedChartIndex])
 
   return <main className='w-full h-screen bg-[var(--background)]'>
+      <section className='absolute top-5 z-55 w-full flex justify-center'>
+          <DashboardTitle 
+            value={data?.name}
+            onChange={(name) => {
+              if(data){
+                setData({
+                  ...data,
+                  name
+                })
+              }
+            }}/>
+      </section>
       <ChartsSidebar
         onDragChart={(chart) => {
 
