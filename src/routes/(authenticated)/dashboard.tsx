@@ -75,16 +75,21 @@ function RouteComponent() {
 
   return <main className='w-full h-screen bg-[var(--background)]'>
       <section className='absolute top-5 z-55 w-full flex justify-center'>
-          <DashboardTitle 
-            value={data?.name}
-            onChange={(name) => {
-              if(data){
-                setData({
-                  ...data,
-                  name
-                })
-              }
-            }}/>
+          {
+            data ?
+              <DashboardTitle 
+                value={data.name}
+                onChange={(name) => {
+                  if(data){
+                    setData({
+                      ...data,
+                      name
+                    })
+                  }
+                }}/>
+              :
+              undefined
+          }
       </section>
       <ChartsSidebar
         onDragChart={(chart) => {
@@ -108,7 +113,7 @@ function RouteComponent() {
             x: chart.x - stagePos.x,
             y: chart.y - stagePos.y,
             fields:[{
-              name:fieldNames[0],
+              name:"Column name",
               color:"#8884d8",
               type: ChartOperation.SUM,
               key:fieldNames[0],
@@ -150,7 +155,7 @@ function RouteComponent() {
           charts[selectedChartIndex].fields = [
             ...charts[selectedChartIndex].fields,
             {
-              name:fieldNames[0],
+              name:"Column name",
               key:fieldNames[0],
               type: ChartOperation.SUM,
               color:"#8884d8",
