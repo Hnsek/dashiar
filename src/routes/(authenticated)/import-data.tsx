@@ -14,6 +14,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { FileImport } from '@/components/FileImport';
 import { addDoc, collection } from 'firebase/firestore';
 import { database } from '@/firebase';
+import { useAuth } from '@/auth-provider';
 
 export const Route = createFileRoute('/(authenticated)/import-data')({
   component: RouteComponent,
@@ -25,6 +26,8 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
+
+  const auth = useAuth()
 
   const onChoose = ( files : File[]) => {
     if(!files){
@@ -108,6 +111,11 @@ function RouteComponent() {
                 onClick={() => {
                   addDoc(collection(database, "dashboards"), {
                     datasets,
+                    createdBy: auth.user?.uid,
+                    createdByEmail: auth.user?.email,
+                    updatedBy: auth.user?.uid,
+                    updatedByEmail: auth.user?.email,
+                    name:"Dashboard",
                     charts:[]
                   })
                   .then((result) => {
