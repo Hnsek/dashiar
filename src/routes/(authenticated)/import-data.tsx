@@ -113,8 +113,10 @@ function RouteComponent() {
                     datasets,
                     createdBy: auth.user?.uid,
                     createdByEmail: auth.user?.email,
+                    createdAt:new Date(),
                     updatedBy: auth.user?.uid,
                     updatedByEmail: auth.user?.email,
+                    updatedAt: new Date(),  
                     name:"Dashboard",
                     charts:[]
                   })
