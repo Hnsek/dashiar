@@ -45,6 +45,8 @@ export type Chart = {
     fields:ChartField[],
 }
 
+type Time = { seconds: number, nanoseconds: number }
+
 export type Dashboard = {
     id:string
     datasets:Dataset[],
@@ -53,5 +55,7 @@ export type Dashboard = {
     createdByEmail:string;
     updatedBy:string;
     updatedByEmail:string;
+    createdAt: Time;
+    updatedAt: Time;
     charts:Chart[]
 } 
