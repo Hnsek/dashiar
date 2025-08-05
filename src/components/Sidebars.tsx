@@ -121,7 +121,7 @@ export const ChartConfigSidebar = memo((props : ChartConfigSidebarProps) => {
 
 
             <section className="flex flex-col gap-2">
-                <h2 className="font-bold text-3xl">Fields</h2>
+                <h2 className="font-bold text-2xl">Fields</h2>
                 <div className="flex flex-col gap-2">
                     {
                         props.data?.map((field, fieldIndex : number) => {
