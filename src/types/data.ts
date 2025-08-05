@@ -47,6 +47,11 @@ export type Chart = {
 
 export type Dashboard = {
     id:string
-    datasets:Dataset[]
+    datasets:Dataset[],
+    name:string,
+    createdBy:string;
+    createdByEmail:string;
+    updatedBy:string;
+    updatedByEmail:string;
     charts:Chart[]
 } 
