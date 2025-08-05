@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as authenticatedListRouteImport } from './routes/(authenticated)/list'
 import { Route as authenticatedImportDataRouteImport } from './routes/(authenticated)/import-data'
 import { Route as authenticatedDashboardRouteImport } from './routes/(authenticated)/dashboard'
 
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authenticatedListRoute = authenticatedListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
 const authenticatedImportDataRoute = authenticatedImportDataRouteImport.update({
   id: '/import-data',
   path: '/import-data',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/dashboard': typeof authenticatedDashboardRoute
   '/import-data': typeof authenticatedImportDataRoute
+  '/list': typeof authenticatedListRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticatedRouteRouteWithChildren
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/dashboard': typeof authenticatedDashboardRoute
   '/import-data': typeof authenticatedImportDataRoute
+  '/list': typeof authenticatedListRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,19 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/(authenticated)/dashboard': typeof authenticatedDashboardRoute
   '/(authenticated)/import-data': typeof authenticatedImportDataRoute
+  '/(authenticated)/list': typeof authenticatedListRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/dashboard' | '/import-data'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard'
+    | '/import-data'
+    | '/list'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/dashboard' | '/import-data'
+  to: '/' | '/login' | '/signup' | '/dashboard' | '/import-data' | '/list'
   id:
     | '__root__'
     | '/'
@@ -82,6 +97,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/(authenticated)/dashboard'
     | '/(authenticated)/import-data'
+    | '/(authenticated)/list'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -121,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated)/list': {
+      id: '/(authenticated)/list'
+      path: '/list'
+      fullPath: '/list'
+      preLoaderRoute: typeof authenticatedListRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
     '/(authenticated)/import-data': {
       id: '/(authenticated)/import-data'
       path: '/import-data'
@@ -141,11 +164,13 @@ declare module '@tanstack/react-router' {
 interface authenticatedRouteRouteChildren {
   authenticatedDashboardRoute: typeof authenticatedDashboardRoute
   authenticatedImportDataRoute: typeof authenticatedImportDataRoute
+  authenticatedListRoute: typeof authenticatedListRoute
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
   authenticatedDashboardRoute: authenticatedDashboardRoute,
   authenticatedImportDataRoute: authenticatedImportDataRoute,
+  authenticatedListRoute: authenticatedListRoute,
 }
 
 const authenticatedRouteRouteWithChildren =
