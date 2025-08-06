@@ -17,7 +17,7 @@ export const Route = createFileRoute('/(authenticated)')({
     },
     component: () => <div className='flex flex-col'>
       <header className='bg-white h-18 border-b border-gray-300 flex justify-between p-4'>
-        <div className='h-full flex gap-2 flex-row items-center'>
+        <div className='h-full flex gap-1 flex-row items-center'>
           <img src={Logo} className='h-full'/>
           <p className='font-bold text-xl'>Dashiar</p>
         </div>
