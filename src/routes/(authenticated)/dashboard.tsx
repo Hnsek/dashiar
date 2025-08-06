@@ -74,7 +74,7 @@ function RouteComponent() {
   },[selectedChartIndex])
 
   return <main className='w-full h-screen bg-[var(--background)]'>
-      <section className='absolute top-5 z-55 w-full flex justify-center'>
+      <section className='absolute top-4 left-1/2 transform -translate-x-1/2 w-fit z-55 flex justify-center self-center'>
           {
             data ?
               <DashboardTitle 
