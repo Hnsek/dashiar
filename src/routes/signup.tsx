@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast, ToastContainer } from 'react-toastify'
 import z from 'zod/v3'
 
 export const Route = createFileRoute('/signup')({
@@ -38,6 +39,12 @@ function RouteComponent() {
           replace:true
         })
         setLoading(false)
+      })
+      .catch((error) => {
+        if(error.code === "auth/email-already-in-use"){
+          toast.error("E-mail already exists")
+          setLoading(false)
+        }
       })
   }
 
@@ -76,5 +83,6 @@ function RouteComponent() {
           }
         </section>
     </form>
+    <ToastContainer/>
   </main>
 }
