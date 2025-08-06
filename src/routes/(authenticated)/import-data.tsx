@@ -5,7 +5,6 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react';
 import { RxUpload } from "react-icons/rx";
 import {toast,ToastContainer} from "react-toastify"
-import lodash from "lodash"
 import { DataList } from '@/components/DataValueList';
 import { DataType } from '@/types/data-type';
 import { convert } from '@/services/data-conversor';
@@ -46,13 +45,6 @@ function RouteComponent() {
             const newData = filesData.map((rootData, index) => {
               const [fields, ...values]  = rootData as [string[], unknown[]]
 
-              
-              const transposedValues = lodash.unzip(values)
-              const fieldsValues = fields.map((name, index) => ({
-                name,
-                values: transposedValues[index]
-              }))
-
               const formattedFields = fields.map((name) => ({
                 name,
                 type: DataType.TEXT
@@ -64,10 +56,8 @@ function RouteComponent() {
 
               const data : Dataset = {
                 name: files[index].name,
-                rootData: rootData.map(data => ({columns:data})),
                 fields: formattedFields,
-                lines,
-                fieldsValues
+                lines
               }
               
               setLoading(false)
@@ -152,22 +142,20 @@ function RouteComponent() {
                   <DataList
                     fields={datasets[0]?.fields}
                     values={values}
-                    onFieldTypeChange={(fieldName : string, type: DataType) => {
+                    onFieldTypeChange={(_, type: DataType, fieldIndex:number) => {
                         setDatasets((dataset) => {
                           if(!dataset){
                             return dataset
                           }
 
                           const index = 0
-                          const fieldIndex = dataset[index].fields.findIndex((field) => field.name === fieldName)
-
+                          
                           dataset[index].fields[fieldIndex].type = type
 
-                          let fieldTransposedValues = lodash.unzip(values)[fieldIndex]
-
-                          fieldTransposedValues=fieldTransposedValues.map((value) => convert(value as string, type))
-
-                          dataset[index].fieldsValues[fieldIndex].values = fieldTransposedValues
+                          dataset[index].lines.map((line) => {
+                            line.columns[fieldIndex] = convert(line.columns[fieldIndex] as string, type) 
+                          })
+                          
 
                           return [...dataset]
                         })
