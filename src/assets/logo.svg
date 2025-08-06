@@ -1,0 +1,20 @@
+<svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Máscara para "furar" o centro -->
+  <defs>
+    <mask id="cutout">
+      <!-- Fundo branco = visível -->
+      <rect width="100%" height="100%" fill="white"/>
+      <!-- Círculo preto = área invisível (recorte) -->
+      <circle cx="100" cy="100" r="30" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Fatias do piechart com máscara aplicada -->
+  <g mask="url(#cutout)">
+    <path d="M100,100 L100,20 A80,80 0 0,1 180,100 Z" fill="#ff6384"/>
+    <path d="M100,100 L180,100 A80,80 0 0,1 140,173 Z" fill="#36a2eb"/>
+    <path d="M100,100 L140,173 A80,80 0 0,1 60,173 Z" fill="#ffce56"/>
+    <path d="M100,100 L60,173 A80,80 0 0,1 20,100 Z" fill="#4bc0c0"/>
+    <path d="M100,100 L20,100 A80,80 0 0,1 100,20 Z" fill="#9966ff"/>
+  </g>
+</svg>
