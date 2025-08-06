@@ -11,14 +11,18 @@ export type AuthState = {
 }
 
 
-const AuthContext = createContext<AuthState | undefined>(undefined)
+export let isAuthenticated = false
 
+const AuthContext = createContext<AuthState | undefined>(undefined)
 export const AuthProvider = ({children } : {children : ReactNode}) => {
     const [user, setUser] = useState<User|null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         onAuthStateChanged(auth,(user) => {
+
+            isAuthenticated = !!user
+
             setUser(user)
             setIsLoading(false)
         })
