@@ -289,17 +289,13 @@ function RouteComponent() {
           const charts = data.charts
           
           const fields = [...charts[selectedChartIndex].fields]
-
+          const newFields = [...charts[selectedChartIndex].fields]
+          
           const filters = [
             ...fields[fieldIndex].filters
           ]
 
           filters.splice(filterIndex, 1)
-          
-          fields[fieldIndex] = {
-            ...fields[fieldIndex],
-            filters
-          }
 
           const dataset = data.datasets[0]
           const fieldNameIndex : number = fieldNames.findIndex((fieldName) => fieldName === newFields[fieldIndex].key)
@@ -313,7 +309,7 @@ function RouteComponent() {
             filteredValues = filter(chartFilter.type, dataset, chartFilter.value as number, chartFilter.fieldIndex,fieldNameIndex) as number[]
           })
 
-          const newFields = [...charts[selectedChartIndex].fields]
+          
 
           const newField : ChartField= {
             ...fields[fieldIndex],
