@@ -8,21 +8,21 @@ export type DataValue = {
 
 export type Dataset = {
     name:string,
-    rootData: unknown[],
     fields:{
         name:string,
         type:DataType
     }[],
     lines:{
         columns:unknown[]
-    }[],
-    fieldsValues:DataValue[]
+    }[]
 
 }
 
 export type ChartFilter = {
+    key:string,
+    datasetIndex:number,
     type: ChartFilterType,
-    value:number
+    value:string | number
 }
 
 export type ChartField = {
@@ -32,7 +32,7 @@ export type ChartField = {
     color:string,
     value: unknown,
     filters:ChartFilter[],
-    dataset:number[]
+    datasetIndex:number
 }
 
 
