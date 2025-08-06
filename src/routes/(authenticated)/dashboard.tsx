@@ -100,14 +100,8 @@ function RouteComponent() {
 
           const charts = data!.charts
 
-          const fieldName = fieldNames[0]
-
-          const fieldValues = data!.datasets[0].fieldsValues.find((fieldValues) => fieldValues.name === fieldName)
-
-          if(!fieldValues){
-            return
-          }
-
+          const fieldNameIndex = 0
+          
           charts.push({
             ...chart,
             x: chart.x - stagePos.x,
@@ -116,10 +110,10 @@ function RouteComponent() {
               name:"Column name",
               color:"#8884d8",
               type: ChartOperation.SUM,
-              key:fieldNames[0],
+              key:fieldNames[fieldNameIndex],
               value:200,
               filters:[],
-              dataset: fieldValues.values as number[] || []
+              fieldIndex:fieldNameIndex
             }]
           })
           
@@ -141,17 +135,10 @@ function RouteComponent() {
 
           const charts : ChartEntity[] = data?.charts
 
-          const dataset = data.datasets[0]
-
-          const fieldValues = dataset.fieldsValues.find((fieldValues) => fieldValues.name === fieldNames[0])
-
-          if(!fieldValues){
-            return
-          }
-
           const value =  !charts[selectedChartIndex].fields.length ? 200 : 0
 
-          
+          const fieldNameIndex = 0
+
           charts[selectedChartIndex].fields = [
             ...charts[selectedChartIndex].fields,
             {
@@ -161,7 +148,7 @@ function RouteComponent() {
               color:"#8884d8",
               value,
               filters:[],
-              dataset: fieldValues.values as number[] || []
+              fieldIndex:fieldNameIndex
             }
           ]
 
@@ -184,26 +171,18 @@ function RouteComponent() {
 
           const fieldNameIndex : number = fieldNames.findIndex((fieldName) => fieldName === field.key)
 
-          const fieldDataset = dataset.fieldsValues.find((fieldValues) => fieldValues.name === fieldNames[fieldNameIndex])
-
-
-          if(!fieldDataset){
-            return
-          }
+          const values = dataset.lines.map((line) => line.columns[fieldNameIndex]) as number[]
           
-
-          let values = fieldDataset.values as number[]
-          
-          
+          let filteredValues = values
           field.filters.forEach((chartFilter) => {
-            values = filter(chartFilter.type,values, chartFilter.value)
+            filteredValues = filter(chartFilter.type, dataset, chartFilter.value as number, chartFilter.fieldIndex,fieldNameIndex) as number[]
           })
 
           fields[index] = {
             ...field,
             key:fieldNames[fieldNameIndex],
-            dataset:values || [],
-            value:values.length ? calculate(field.type,values) : 0
+            value:filteredValues.length ? calculate(field.type,filteredValues) : 0,
+            fieldIndex: fieldNameIndex
           }
 
           charts[selectedChartIndex].fields = fields
@@ -241,12 +220,15 @@ function RouteComponent() {
           const charts = data.charts
 
           const fields = [...charts[selectedChartIndex].fields]
-
-          const filters = [
+          const field = fields[fieldIndex]
+          
+          const filters : ChartFilter[] = [
               ...fields[fieldIndex].filters,
               {
                 type:ChartFilterType.EQUAL,
-                value:0
+                value:0,
+                key: field.key,
+                fieldIndex: field.fieldIndex
               }
             ]
           
@@ -268,29 +250,26 @@ function RouteComponent() {
           }
 
           const charts = data.charts
-
+          const dataset = data.datasets[0]
+          
           const field = charts[selectedChartIndex].fields[fieldIndex]
+          const fieldNameIndex : number = fieldNames.findIndex((fieldName) => fieldName === field.key)
 
-          const fieldDataset = data.datasets[0].fieldsValues.find((fieldValues) => fieldValues.name === field.key)
+          const values = dataset.lines.map((line) => line.columns[fieldNameIndex]) as number[]
+        
 
-          if(!fieldDataset){
-            return
-          }
-
-          let values = fieldDataset.values as number[]
-          
-          
+          let filteredValues = values
           filters.forEach((chartFilter) => {
-            values = filter(chartFilter.type,values, chartFilter.value)
+            filteredValues = filter(chartFilter.type, dataset, chartFilter.value as number, chartFilter.fieldIndex,fieldNameIndex) as number[]
           })
 
           const newFields = [...charts[selectedChartIndex].fields]
 
+
           const newField : ChartField= {
             ...field,
-            dataset:values || [],
             filters,
-            value: values.length ? calculate(field.type,values) : 0
+            value: filteredValues.length ? calculate(field.type,filteredValues) : 0
           }
           
           newFields[fieldIndex] = newField
@@ -308,7 +287,7 @@ function RouteComponent() {
           }
           
           const charts = data.charts
-
+          
           const fields = [...charts[selectedChartIndex].fields]
 
           const filters = [
@@ -322,18 +301,16 @@ function RouteComponent() {
             filters
           }
 
+          const dataset = data.datasets[0]
+          const fieldNameIndex : number = fieldNames.findIndex((fieldName) => fieldName === newFields[fieldIndex].key)
           
+          const values = dataset.lines.map((line) => line.columns[fieldNameIndex]) as number[]
+
           
-          const fieldDataset = data.datasets[0].fieldsValues.find((fieldValues) => fieldValues.name === fields[fieldIndex].key)
-
-          if(!fieldDataset){
-            return
-          }
-
-          let values = fieldDataset.values as number[]
+          let filteredValues = values as number[]
           
           filters.forEach((chartFilter) => {
-            values = filter(chartFilter.type,values, chartFilter.value)
+            filteredValues = filter(chartFilter.type, dataset, chartFilter.value as number, chartFilter.fieldIndex,fieldNameIndex) as number[]
           })
 
           const newFields = [...charts[selectedChartIndex].fields]
@@ -341,7 +318,7 @@ function RouteComponent() {
           const newField : ChartField= {
             ...fields[fieldIndex],
             filters,
-            value: values.length ? calculate(fields[fieldIndex].type,values) : 0
+            value: filteredValues.length ? calculate(fields[fieldIndex].type,filteredValues) : 0
           }
 
           newFields[fieldIndex] = newField
