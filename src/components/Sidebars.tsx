@@ -41,11 +41,14 @@ type Props = {
 export const ChartsSidebar = (props : Props) => {
     const [show, setShow] = useState(true)
 
+
+    
     return <main 
         style={{
-            width: show ? "16%" : 0
+            width: show ? "16%" : 0,
+            minWidth: show ? "200px" : 0
         }}
-        className="absolute left-0 top-0 h-screen bg-white w-[16%] z-50 shadow transition-all ">
+        className="absolute left-0 top-0 h-full bg-white w-[16%] z-50 shadow transition-all pt-20">
         <button 
             className="absolute -right-12 top-[50%] bottom-[50%] bg-white rounded-full h-fit p-3 shadow cursor-pointer hover:brightness-80"
             onClick={() => setShow(!show)}
@@ -113,10 +116,7 @@ export const ChartConfigSidebar = memo((props : ChartConfigSidebarProps) => {
 
 
     return <main 
-        style={{
-            width: props.show ? "30%" : 0
-        }}
-        className="absolute right-0 top-0 h-screen bg-white w-[16%] z-50 shadow transition-all p-2 gap-3 flex flex-col overflow-auto"
+        className="absolute right-0  pt-20 top-0 h-screen bg-white z-50 shadow transition-all p-2 gap-3 flex flex-col overflow-auto w-[80%] sm:w-[30%]"
         >
 
 
