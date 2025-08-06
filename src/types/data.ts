@@ -20,7 +20,7 @@ export type Dataset = {
 
 export type ChartFilter = {
     key:string,
-    datasetIndex:number,
+    fieldIndex:number,
     type: ChartFilterType,
     value:string | number
 }
@@ -32,7 +32,7 @@ export type ChartField = {
     color:string,
     value: unknown,
     filters:ChartFilter[],
-    datasetIndex:number
+    fieldIndex:number
 }
 
 
