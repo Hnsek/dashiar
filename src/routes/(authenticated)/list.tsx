@@ -59,7 +59,7 @@ function RouteComponent() {
       </header>
       {
         data.length ?
-          <main className='grid grid-cols-4 grid-rows-2'>
+          <main className='grid grid-cols-[32%_32%_32%_4%] grid-rows-2'>
             <h2 className='font-bold'>Name</h2>
             <h2>Owner</h2>
             <h2>Last modified</h2>
@@ -69,7 +69,7 @@ function RouteComponent() {
               data.map((dashboard, index) => {
                 return <div 
                   key={index}
-                  className='grid grid-cols-4 col-span-4 bg-white rounded border border-gray-300'>
+                  className='grid grid-cols-[32%_32%_32%_4%] col-span-4 bg-white rounded border border-gray-300'>
                   <button 
                     className=' p-2  cursor-pointer grid grid-cols-3 col-span-3 py-5'
                     onMouseDown={() => navigate({
@@ -83,10 +83,10 @@ function RouteComponent() {
                       <p className='text-start'>{dashboard.createdByEmail}</p>
                       <p className='text-start'>{format(new Date(dashboard.updatedAt.seconds * 1000 + dashboard.updatedAt.nanoseconds / 1e6), "dd/MM/yyyy")}</p>
                   </button>
-                  <div className='w-full flex items-center justify-end p-4'>
+                  <div className='flex items-center justify-end p-3'>
                     <Menu
 
-                      menuButton={<MenuButton className={"cursor-pointer"}><FaEllipsisV /></MenuButton>}>
+                      menuButton={<MenuButton className={"cursor-pointer w-full rounded-full bg-white hover:brightness-80 h-full flex justify-center items-center"}><FaEllipsisV /></MenuButton>}>
                       <MenuItem 
                         onMouseDown={() => {
                           deleteDoc(doc(database, "dashboards", dashboard.id))
