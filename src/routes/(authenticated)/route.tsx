@@ -7,7 +7,7 @@ import { logout } from '@/services/firebase-auth';
 import { isAuthenticated } from '@/auth-provider';
 
 export const Route = createFileRoute('/(authenticated)')({
-  beforeLoad: ({ context, location }) => {
+  beforeLoad: ({ location }) => {
       if (!isAuthenticated) {
         throw redirect({
           to: '/login',
