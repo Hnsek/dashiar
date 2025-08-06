@@ -1,11 +1,24 @@
+import type { Dataset } from "@/types/data"
 import { ChartFilterType } from "@/types/data-type"
 
 const operations = {
-    [ChartFilterType.MORETHAN]:(data : number[], value : number) => data.filter((compareValue) => compareValue > value),
-    [ChartFilterType.LESSTHAN]:(data : number[], value : number) => data.filter((compareValue) => compareValue < value),
-    [ChartFilterType.EQUAL]:(data : number[], value : number) => data.filter((compareValue) => compareValue == value),
+    [ChartFilterType.MORETHAN]:(dataset : Dataset, value : number, comparableColumnIndex: number, resultColumnIndex : number) => {
+        return dataset.lines
+            .filter((line) => line.columns[comparableColumnIndex] as number  > value)
+            .map((result) => result.columns[resultColumnIndex])
+    },
+    [ChartFilterType.LESSTHAN]:(dataset : Dataset, value : number, comparableColumnIndex: number, resultColumnIndex : number) => {
+        return dataset.lines
+            .filter((line) => line.columns[comparableColumnIndex] as number  < value)
+            .map((result) => result.columns[resultColumnIndex])
+    },
+    [ChartFilterType.EQUAL]:(dataset : Dataset, value : number, comparableColumnIndex: number, resultColumnIndex : number) => {
+        return dataset.lines
+            .filter((line) => line.columns[comparableColumnIndex] as number  == value)
+            .map((result) => result.columns[resultColumnIndex])
+    },
 }
 
-export const filter = (operation:ChartFilterType, data : number[],  value : number) => {
-    return operations[operation](data,value)
+export const filter = (operation:ChartFilterType, dataset : Dataset,  value : number, comparableColumnIndex: number, resultColumnIndex : number) => {
+    return operations[operation](dataset,value, comparableColumnIndex, resultColumnIndex)
 }
