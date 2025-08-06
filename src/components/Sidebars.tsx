@@ -191,6 +191,28 @@ export const ChartConfigSidebar = memo((props : ChartConfigSidebarProps) => {
                                             {field.filters.map((filter, filterIndex) => {
                                                 return <div className="flex gap-2  w-full" key={filterIndex}>
                                                     <select 
+                                                        value={filter.key}
+                                                        className="flex rounded border bg-white p-1 hover:brightness-80 cursor-pointer flex-1" onChange={(event)=>{
+                                                        
+
+                                                        const newFilters = [...field.filters] 
+
+                                                        newFilters[filterIndex] = {
+                                                            ...filter,
+                                                            key: event.target.value,
+                                                            fieldIndex: props.fieldNames?.findIndex((fieldName : string) => fieldName ===event.target.value) || 0
+                                                            
+                                                        }
+
+                                                        props.onUpdateFilter?.(fieldIndex, newFilters)
+                                                    }}>
+                                                        {
+                                                            props.fieldNames?.map((fieldName : string, fieldIndex : number) => {
+                                                                return <option key={fieldIndex} value={fieldName}>{fieldName}</option>
+                                                            })
+                                                        }
+                                                    </select>
+                                                    <select 
                                                         value={filter.type}
                                                         className=" flex rounded border bg-white p-1 hover:brightness-80 cursor-pointer flex-1" onChange={(event)=>{
 
@@ -199,6 +221,7 @@ export const ChartConfigSidebar = memo((props : ChartConfigSidebarProps) => {
                                                             newFilters[filterIndex] = {
                                                                 ...filter,
                                                                 type:event.target.value as ChartFilterType,
+
                                                             }
 
                                                             props.onUpdateFilter?.(fieldIndex, newFilters)
@@ -209,7 +232,6 @@ export const ChartConfigSidebar = memo((props : ChartConfigSidebarProps) => {
                                                     </select>
                                                     <input
                                                         placeholder="Value" 
-                                                        type="number"
                                                         className="flex rounded border bg-white p-1 hover:brightness-80 cursor-text flex-1"
                                                         value={filter.value}
                                                         onKeyDown={(event) => event.stopPropagation()}
@@ -220,7 +242,7 @@ export const ChartConfigSidebar = memo((props : ChartConfigSidebarProps) => {
 
                                                             newFilters[filterIndex] = {
                                                             ...filter,
-                                                            value:parseFloat(event.target.value),
+                                                            value:!isNaN(parseFloat(event.target.value)) ? parseFloat(event.target.value) : event.target.value,
                                                         }
 
                                                             props.onUpdateFilter?.(fieldIndex, newFilters)
