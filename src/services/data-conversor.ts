@@ -3,7 +3,7 @@ import parse  from "number-parsing"
 import dateParser from 'any-date-parser';
 
 const options = {
-    [DataType.NUMBER]:(value : string | number) => parse(value),
+    [DataType.NUMBER]:(value : string) => !isNaN(parseFloat(value)) ? parse(value) : value,
     [DataType.DATETIME]:(value:string) => dateParser.fromString(value),
     [DataType.TEXT]:(value:string) => value
 }
