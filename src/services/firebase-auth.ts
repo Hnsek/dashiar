@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword as signInDefault } from "firebase/auth"
+import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword as signInDefault, signOut } from "firebase/auth"
 import {auth} from "../firebase"
 
 export const signInWithGoogle = () => {
@@ -14,3 +14,5 @@ export const signInWithFacebook = () => {
 export const signUp = (email : string, password: string) => createUserWithEmailAndPassword(auth, email, password)
 
 export const signInWithEmailAndPassword = (email: string, password:string) => signInDefault(auth,email, password)
+
+export const logout = () => signOut(auth)
