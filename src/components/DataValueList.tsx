@@ -7,7 +7,7 @@ type Props = {
         type:DataType
     }[],
     values:unknown[][],
-    onFieldTypeChange?:(field:string, type:DataType) => void
+    onFieldTypeChange?:(field:string, type:DataType, fieldIndex:number) => void
 }
 
 export const DataList = (props:Props) => {
@@ -20,7 +20,7 @@ export const DataList = (props:Props) => {
                 <h2 className="text-center px-3 py-4 font-bold">{field.name}</h2>
                 <select className="w-fit bg-white rounded p-1 hover:brightness-80 cursor-pointer" onChange={(event)=>{
                     const type = event.target.value as DataType
-                    props.onFieldTypeChange?.(field.name,type)
+                    props.onFieldTypeChange?.(field.name,type, index)
                 }}>
                     <option value={DataType.TEXT}>Text</option>
                     <option value={DataType.NUMBER}>Number</option>
