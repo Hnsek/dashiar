@@ -6,6 +6,10 @@ import { FcGoogle } from "react-icons/fc";
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from 'zod/v3';
+import { toast, ToastContainer } from 'react-toastify';
+import { useAuth } from '@/auth-provider';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/firebase';
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
@@ -30,10 +34,15 @@ function RouteComponent() {
   const onSubmit = (data : Inputs) => {
     signInWithEmailAndPassword(data.email, data.password)
       .then(() => navigate({
-        to:"/import-data",
+        to:"/list",
         replace: true
       }))
+      .catch((error) => {
+          console.error(error)
+          toast.error("Credentials incorrent")
+      })
   }
+
 
   return <main
     className='bg-[var(--background)] h-screen w-full'
@@ -67,8 +76,10 @@ function RouteComponent() {
               <Button
                 onClick={() => {
                   signInWithGoogle()
-                  .then((userCredentials) => {
-                    console.warn("userCredentials: ", userCredentials)
+                  .then(() => {
+                    navigate({
+                      to:"/list",
+                    })
                   })
                 }}
                 className='border px-10 p-2 flex items-center justify-center gap-1 rounded cursor-pointer hover:brightness-80 hover:bg-[#c7c8c9]'
@@ -81,5 +92,6 @@ function RouteComponent() {
           >Sign up</Link>
         </section>
     </form>
+    <ToastContainer/>
   </main>
 }
