@@ -7,10 +7,6 @@ import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from 'zod/v3';
 import { toast, ToastContainer } from 'react-toastify';
-import { useAuth } from '@/auth-provider';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/firebase';
-
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
 })
