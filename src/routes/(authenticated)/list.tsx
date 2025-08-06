@@ -45,7 +45,7 @@ function RouteComponent() {
   }, [])
 
   return <div className='w-full h-screen bg-[var(--background)] p-4'>
-      <header className='w-full flex justify-between items-center'>
+      <header className='w-full flex justify-between items-center mb-4'>
           <h1 className='text-2xl font-bold'>Dashboards</h1>
           <Button
             text='Create'
@@ -59,17 +59,17 @@ function RouteComponent() {
       </header>
       {
         data.length ?
-          <main className='grid grid-cols-[32%_32%_32%_4%] grid-rows-2'>
+          <main className='grid grid-cols-[32%_32%_32%_4%]  '>
             <h2 className='font-bold'>Name</h2>
             <h2>Owner</h2>
-            <h2>Last modified</h2>
+            <h2 >Last modified</h2>
             <h2></h2>
             
             {
               data.map((dashboard, index) => {
                 return <div 
                   key={index}
-                  className='grid grid-cols-[32%_32%_32%_4%] col-span-4 bg-white rounded border border-gray-300'>
+                  className='grid grid-cols-[32%_32%_32%_4%] col-span-4 bg-white rounded border border-gray-300 mb-1'>
                   <button 
                     className=' p-2  cursor-pointer grid grid-cols-3 col-span-3 py-5'
                     onMouseDown={() => navigate({
