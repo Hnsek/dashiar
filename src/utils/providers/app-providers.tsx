@@ -8,7 +8,6 @@ import {
 import { getStripe } from "@/config/stripe";
 
 const composeProviders = (...providers : ComponentType<{ children: ReactNode }>[]) => ({children} : {children:ReactNode}) => {
-    console.warn("children: ", children)
     return providers.reduceRight((accumulator, Provider) => {
         return <Provider>{accumulator}</Provider>
     },children)
