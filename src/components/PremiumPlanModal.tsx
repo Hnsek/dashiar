@@ -1,14 +1,14 @@
 import { useAuth } from "@/utils/providers/auth-provider";
+import { useModal } from "@/utils/providers/modal";
 import { useStripe } from "@stripe/react-stripe-js";
 
-type Props = {
-    onClose?: () => void
-}
 
-export function PremiumPlanModal({ onClose } : Props) {
+export function PremiumPlanModal() {
 
     const stripe = useStripe()
     const auth = useAuth()
+
+    const {hide} = useModal()
 
     const goToPaymentPage = async () => {
 
@@ -20,7 +20,7 @@ export function PremiumPlanModal({ onClose } : Props) {
         }],
         mode:"subscription",
         customerEmail: auth.user?.email!,
-        successUrl: window.location.href,
+        successUrl: `${window.location.origin}/subscription-sucess?session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: window.location.href,
       })
       
@@ -47,13 +47,13 @@ export function PremiumPlanModal({ onClose } : Props) {
 
         <button
           onClick={() => goToPaymentPage()}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          className="w-full bg-[var(--primary)] text-white py-2 px-4 rounded hover:brightness-80 transition cursor-pointer"
         >
           Subscribe to Premium
         </button>
         <button
-          onClick={onClose}
-          className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300 transition"
+          onClick={()=>hide()}
+          className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300 transition cursor-pointer"
         >
           Cancel
         </button>

@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as authenticatedSubscriptionSucessRouteImport } from './routes/(authenticated)/subscription-sucess'
 import { Route as authenticatedListRouteImport } from './routes/(authenticated)/list'
 import { Route as authenticatedImportDataRouteImport } from './routes/(authenticated)/import-data'
 import { Route as authenticatedDashboardRouteImport } from './routes/(authenticated)/dashboard'
@@ -36,6 +37,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authenticatedSubscriptionSucessRoute =
+  authenticatedSubscriptionSucessRouteImport.update({
+    id: '/subscription-sucess',
+    path: '/subscription-sucess',
+    getParentRoute: () => authenticatedRouteRoute,
+  } as any)
 const authenticatedListRoute = authenticatedListRouteImport.update({
   id: '/list',
   path: '/list',
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof authenticatedDashboardRoute
   '/import-data': typeof authenticatedImportDataRoute
   '/list': typeof authenticatedListRoute
+  '/subscription-sucess': typeof authenticatedSubscriptionSucessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticatedRouteRouteWithChildren
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof authenticatedDashboardRoute
   '/import-data': typeof authenticatedImportDataRoute
   '/list': typeof authenticatedListRoute
+  '/subscription-sucess': typeof authenticatedSubscriptionSucessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,6 +86,7 @@ export interface FileRoutesById {
   '/(authenticated)/dashboard': typeof authenticatedDashboardRoute
   '/(authenticated)/import-data': typeof authenticatedImportDataRoute
   '/(authenticated)/list': typeof authenticatedListRoute
+  '/(authenticated)/subscription-sucess': typeof authenticatedSubscriptionSucessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,8 +97,16 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/import-data'
     | '/list'
+    | '/subscription-sucess'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/dashboard' | '/import-data' | '/list'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard'
+    | '/import-data'
+    | '/list'
+    | '/subscription-sucess'
   id:
     | '__root__'
     | '/'
@@ -98,6 +116,7 @@ export interface FileRouteTypes {
     | '/(authenticated)/dashboard'
     | '/(authenticated)/import-data'
     | '/(authenticated)/list'
+    | '/(authenticated)/subscription-sucess'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -137,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated)/subscription-sucess': {
+      id: '/(authenticated)/subscription-sucess'
+      path: '/subscription-sucess'
+      fullPath: '/subscription-sucess'
+      preLoaderRoute: typeof authenticatedSubscriptionSucessRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
     '/(authenticated)/list': {
       id: '/(authenticated)/list'
       path: '/list'
@@ -165,12 +191,14 @@ interface authenticatedRouteRouteChildren {
   authenticatedDashboardRoute: typeof authenticatedDashboardRoute
   authenticatedImportDataRoute: typeof authenticatedImportDataRoute
   authenticatedListRoute: typeof authenticatedListRoute
+  authenticatedSubscriptionSucessRoute: typeof authenticatedSubscriptionSucessRoute
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
   authenticatedDashboardRoute: authenticatedDashboardRoute,
   authenticatedImportDataRoute: authenticatedImportDataRoute,
   authenticatedListRoute: authenticatedListRoute,
+  authenticatedSubscriptionSucessRoute: authenticatedSubscriptionSucessRoute,
 }
 
 const authenticatedRouteRouteWithChildren =
