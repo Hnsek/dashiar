@@ -7,6 +7,8 @@ import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from 'zod/v3';
 import { toast, ToastContainer } from 'react-toastify';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { database } from '@/config/firebase';
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
 })
@@ -30,9 +32,10 @@ function RouteComponent() {
   const onSubmit = (data : Inputs) => {
     signInWithEmailAndPassword(data.email, data.password)
       .then(() => navigate({
-        to:"/list",
-        replace: true
-      }))
+          to:"/list",
+          replace: true
+        })
+      )
       .catch((error) => {
           console.error(error)
           toast.error("Credentials incorrent")
@@ -72,7 +75,22 @@ function RouteComponent() {
               <Button
                 onClick={() => {
                   signInWithGoogle()
-                  .then(() => {
+                  .then(async (userCredentials) => {
+
+                    const subscriptionQuery = query(collection(database,"subscriptions"), where("userId","==", userCredentials.user.uid))
+
+                    const result = await getDocs(subscriptionQuery)
+
+                    const docs = result.docs
+
+                    if(!docs.length){
+                      addDoc(collection(database, "subscriptions"),{
+                        userId: userCredentials.user.uid,
+                        userEmail: userCredentials.user.email,
+                        type:"free"
+                      })
+                    }
+                    
                     navigate({
                       to:"/list",
                     })

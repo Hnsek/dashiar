@@ -1,9 +1,11 @@
 import { Button } from '@/components/Buttons'
 import { Input } from '@/components/Inputs'
 import Loading from '@/components/Loading'
+import { database } from '@/config/firebase'
 import { signUp } from '@/services/firebase-auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast, ToastContainer } from 'react-toastify'
@@ -33,7 +35,22 @@ function RouteComponent() {
   const onSubmit = (data : Inputs) => {
     setLoading(true)
     signUp(data.email, data.password)
-      .then(() => {
+      .then(async (userCredentials) => {
+
+        const subscriptionQuery = query(collection(database,"subscriptions"), where("userId","==", userCredentials.user.uid))
+        
+        const result = await getDocs(subscriptionQuery)
+
+        const docs = result.docs
+
+        if(!docs.length){
+          addDoc(collection(database, "subscriptions"),{
+            userId: userCredentials.user.uid,
+            userEmail: userCredentials.user.email,
+            type:"free"
+          })
+        }
+
         navigate({
           to:"/import-data",
           replace:true
