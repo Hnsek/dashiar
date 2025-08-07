@@ -51,12 +51,7 @@ const App = () => {
         <Loading/>
     </main>
   }
-
-  return <>
-    <AppProviders>
-        <RouterProvider router={router}  context={{auth, ...TanStackQueryProviderContext}}/>
-    </AppProviders>
-  </>
+  return <RouterProvider router={router}  context={{auth, ...TanStackQueryProviderContext}}/>
 }
 
 // Render the app
@@ -66,7 +61,9 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
-          <App/>
+          <AppProviders>
+            <App/>
+          </AppProviders>
       </TanStackQueryProvider.Provider>
     </StrictMode>,
   )
