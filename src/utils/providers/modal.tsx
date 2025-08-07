@@ -21,12 +21,15 @@ export const ModalProvider = ({children} : {children : ReactNode}) => {
         {children}
         {component ? 
             <div className="z-99999 w-full h-screen fixed top-0 left-0 flex items-center justify-center">
-                <div className="w-full h-screen bg-black opacity-80  absolute"></div>
                 <button 
                     onMouseDown={() => hide()} 
-                    className="w-full h-full flex items-center justify-center z-50">
+                    className="w-full h-screen bg-black opacity-80  absolute"
+                
+                ></button>
+                <div 
+                    className="flex items-center justify-center z-50 bg-red-500">
                     {component}
-                </button>
+                </div>
 
 
             </div>
