@@ -1,11 +1,14 @@
-import { createFileRoute, Link, Outlet, redirect, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import Logo from "../../assets/logo.svg"
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { logout } from '@/services/firebase-auth';
-import { isAuthenticated } from '@/auth-provider';
+import { isAuthenticated } from '@/utils/providers/auth-provider';
 import { FaChartPie } from "react-icons/fa";
+import { FaLightbulb } from "react-icons/fa";
+import { useModal } from '@/utils/providers/modal';
+import { PremiumPlanModal } from '@/components/PremiumPlanModal';
 
 export const Route = createFileRoute('/(authenticated)')({
   beforeLoad: ({ location }) => {
@@ -16,7 +19,11 @@ export const Route = createFileRoute('/(authenticated)')({
         });
       }
     },
-    component: () => <div className='flex flex-col h-screen overflow-hidden'>
+    component: () => {
+
+      const {show} = useModal()
+
+      return <div className='flex flex-col h-screen overflow-hidden'>
       <header className='bg-white h-18 border-b border-gray-300 flex justify-between p-4 z-100'>
         <Link to='/' className='h-full flex gap-1 flex-row items-center'>
             <img src={Logo} className='h-full'/>
@@ -32,6 +39,14 @@ export const Route = createFileRoute('/(authenticated)')({
             </Link>
           </MenuItem>
           <MenuItem 
+            onMouseDown={() => show(<PremiumPlanModal/>)}
+            className="bg-white px-5  flex gap-2 items-center p-2 rounded cursor-pointer border border-gray-300 hover:brightness-80 w-50">
+            <div className='flex gap-2 items-center'>
+              <FaLightbulb />
+              <p>Premium</p>
+            </div>
+          </MenuItem>
+          <MenuItem 
             onMouseDown={() => logout()}
             className="bg-white px-5  flex gap-2 items-center p-2 rounded cursor-pointer border border-gray-300 hover:brightness-80">
             <FiLogOut />
@@ -40,5 +55,6 @@ export const Route = createFileRoute('/(authenticated)')({
         </Menu>
       </header>
       <Outlet />
-    </div>,
+    </div>
+    }
 })  
