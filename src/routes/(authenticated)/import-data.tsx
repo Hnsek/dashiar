@@ -12,7 +12,7 @@ import Loading from '@/components/Loading';
 import { FaArrowRight } from "react-icons/fa";
 import { FileImport } from '@/components/FileImport';
 import { addDoc, collection } from 'firebase/firestore';
-import { database } from '@/firebase';
+import { database } from '@/config/firebase';
 import { useAuth } from '@/utils/providers/auth-provider';
 
 export const Route = createFileRoute('/(authenticated)/import-data')({

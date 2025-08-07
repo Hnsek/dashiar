@@ -1,6 +1,6 @@
 import { onAuthStateChanged, signOut, type User } from "firebase/auth"
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { auth } from "../../firebase";
+import { auth } from "../../config/firebase";
 
 
 export type AuthState = {

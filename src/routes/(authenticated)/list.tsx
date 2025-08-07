@@ -1,5 +1,5 @@
 import { useAuth } from '@/utils/providers/auth-provider'
-import { database } from '@/firebase'
+import { database } from '@/config/firebase'
 import type { Dashboard } from '@/types/data'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore'

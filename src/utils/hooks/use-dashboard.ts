@@ -1,4 +1,4 @@
-import { database } from "@/firebase"
+import { database } from "@/config/firebase"
 import { type Dashboard } from "@/types/data"
 import { doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { useEffect, useRef, useState } from "react"
