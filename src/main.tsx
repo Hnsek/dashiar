@@ -10,9 +10,9 @@ import { routeTree } from './routeTree.gen'
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
 import { getContext } from './config/persist-query.tsx'
-import { AuthProvider, useAuth } from './utils/providers/auth-provider.tsx'
+import { useAuth } from './utils/providers/auth-provider.tsx'
 import Loading from './components/Loading.tsx'
-import { ModalProvider } from './utils/providers/modal.tsx'
+import { AppProviders } from './utils/providers/app-providers.tsx'
 
 // Create a new router instance
 
@@ -52,7 +52,11 @@ const App = () => {
     </main>
   }
 
-  return <RouterProvider router={router}  context={{auth, ...TanStackQueryProviderContext}}/>
+  return <>
+    <AppProviders>
+        <RouterProvider router={router}  context={{auth, ...TanStackQueryProviderContext}}/>
+    </AppProviders>
+  </>
 }
 
 // Render the app
@@ -62,11 +66,7 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
-        <AuthProvider>
-          <ModalProvider>
-            <App/>
-          </ModalProvider>
-        </AuthProvider>
+          <App/>
       </TanStackQueryProvider.Provider>
     </StrictMode>,
   )
