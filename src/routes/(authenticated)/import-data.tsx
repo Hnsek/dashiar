@@ -11,9 +11,11 @@ import { convert } from '@/services/data-conversor';
 import Loading from '@/components/Loading';
 import { FaArrowRight } from "react-icons/fa";
 import { FileImport } from '@/components/FileImport';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { database } from '@/config/firebase';
 import { useAuth } from '@/utils/providers/auth-provider';
+import { useModal } from '@/utils/providers/modal';
+import { PremiumPlanModal } from '@/components/PremiumPlanModal';
 
 export const Route = createFileRoute('/(authenticated)/import-data')({
   component: RouteComponent,
@@ -27,6 +29,7 @@ function RouteComponent() {
   const navigate = useNavigate()
 
   const auth = useAuth()
+  const {show} = useModal()
 
   const onChoose = ( files : File[]) => {
     if(!files){
@@ -98,7 +101,27 @@ function RouteComponent() {
             datasets ?
               <Button
                 text="Next"
-                onClick={() => {
+                onClick={async () => {
+
+                  let isPremium = auth.subscriptions.some((subscription) => subscription.type === "premium")
+
+                  if(!isPremium && datasets[0].lines.length > 100){ 
+                    show(<PremiumPlanModal/>)
+                    return
+                  }
+
+                  const dashboardsQuery = query(
+                    collection(database,"dashboards"),
+                    where("createdBy","==",auth.user?.uid)
+                  )
+
+                  const dashboards = await getDocs(dashboardsQuery)
+
+                  if(!isPremium && dashboards.docs.length >= 1){
+                    show(<PremiumPlanModal/>)
+                    return
+                  }
+
                   addDoc(collection(database, "dashboards"), {
                     datasets,
                     createdBy: auth.user?.uid,
