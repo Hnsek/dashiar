@@ -4,7 +4,7 @@ import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { logout } from '@/services/firebase-auth';
-import { isAuthenticated } from '@/utils/providers/auth-provider';
+import { isAuthenticated, useAuth } from '@/utils/providers/auth-provider';
 import { FaChartPie } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa";
 import { useModal } from '@/utils/providers/modal';
@@ -22,6 +22,7 @@ export const Route = createFileRoute('/(authenticated)')({
     component: () => {
 
       const {show} = useModal()
+      const auth = useAuth()
 
       return <div className='flex flex-col h-screen overflow-hidden'>
       <header className='bg-white h-18 border-b border-gray-300 flex justify-between p-4 z-100'>
@@ -38,14 +39,20 @@ export const Route = createFileRoute('/(authenticated)')({
               <p>My dashboards</p>
             </Link>
           </MenuItem>
-          <MenuItem 
-            onMouseDown={() => show(<PremiumPlanModal/>)}
-            className="bg-white px-5  flex gap-2 items-center p-2 rounded cursor-pointer border border-gray-300 hover:brightness-80 w-50">
-            <div className='flex gap-2 items-center'>
-              <FaLightbulb />
-              <p>Premium</p>
-            </div>
-          </MenuItem>
+          {
+            !auth.subscriptions.some((subscription) => subscription.type === "premium")
+              ?
+              <MenuItem 
+                onMouseDown={() => show(<PremiumPlanModal/>)}
+                className="bg-white px-5  flex gap-2 items-center p-2 rounded cursor-pointer border border-gray-300 hover:brightness-80 w-50">
+                <div className='flex gap-2 items-center'>
+                  <FaLightbulb />
+                  <p>Premium</p>
+                </div>
+              </MenuItem>
+              :
+              undefined
+          }
           <MenuItem 
             onMouseDown={() => logout()}
             className="bg-white px-5  flex gap-2 items-center p-2 rounded cursor-pointer border border-gray-300 hover:brightness-80">
