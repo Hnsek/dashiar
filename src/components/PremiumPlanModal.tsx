@@ -15,7 +15,7 @@ export function PremiumPlanModal() {
 
       await stripe?.redirectToCheckout({
         lineItems:[{
-          price:import.meta.env.VITE_STRIBE_PREMIUM_ID,
+          price:import.meta.env.VITE_STRIPE_PREMIUM_ID,
           quantity:1
         }],
         mode:"subscription",
