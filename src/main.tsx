@@ -10,8 +10,9 @@ import { routeTree } from './routeTree.gen'
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
 import { getContext } from './config/persist-query.tsx'
-import { AuthProvider, useAuth } from './auth-provider.tsx'
+import { AuthProvider, useAuth } from './utils/providers/auth-provider.tsx'
 import Loading from './components/Loading.tsx'
+import { ModalProvider } from './utils/providers/modal.tsx'
 
 // Create a new router instance
 
@@ -62,7 +63,9 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
         <AuthProvider>
-          <App/>
+          <ModalProvider>
+            <App/>
+          </ModalProvider>
         </AuthProvider>
       </TanStackQueryProvider.Provider>
     </StrictMode>,
