@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth-provider'
+import { useAuth } from '@/utils/providers/auth-provider'
 import { database } from '@/firebase'
 import type { Dashboard } from '@/types/data'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'

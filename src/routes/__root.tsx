@@ -4,7 +4,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import type { QueryClient } from '@tanstack/react-query'
-import type { AuthState } from '@/auth-provider.tsx'
+import type { AuthState } from '@/utils/providers/auth-provider.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient,
